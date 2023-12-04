@@ -12,28 +12,32 @@ import (
 	"fmt"
 )
 
-const ErrorLowSalary = "Error: salary is less than 10000"
+type ErrNotTaxableSalary struct{}
 
-type TaxError struct {
-	msg string
+func (err ErrNotTaxableSalary) Error() string {
+	return "salary is less than 10000"
 }
 
-func (te TaxError) Error() string {
-	return te.msg
+func ShouldPayTaxes(salary int) (err error) {
+	if salary <= 10000 {
+		err = ErrNotTaxableSalary{}
+		return
+	}
+	return
 }
 
 func main() {
-	salary := 8000
+	const salary = 8000
 
-	if salary <= 10000 {
-		taxError := TaxError{
-			msg: ErrorLowSalary,
+	if err := ShouldPayTaxes(salary); err != nil {
+		if errors.Is(err, ErrNotTaxableSalary{}) {
+			fmt.Println(err.Error())
+			return
 		}
 
-		if errors.Is(taxError, TaxError{ErrorLowSalary}) {
-			panic(taxError)
-		}
+		fmt.Println("an unexpected error ocurred")
+		return
 	}
 
-	fmt.Println("Salary is greater than 10000")
+	fmt.Println("Must pay tax")
 }
