@@ -33,9 +33,8 @@ func main() {
 	defer fmt.Println("Ejecución finalizada!")
 
 	if err != nil {
-		fmt.Println(err)
 		panic("the indicated file was not found or is damaged")
 	}
 
-	fmt.Println("Contenido del archivo:", data)
+	fmt.Println("Contenido del archivo:\n", data)
 }
