@@ -15,16 +15,16 @@ type TaxError struct {
 }
 
 func (me *TaxError) Error() string {
-	return "Error: the salary entered does not reach the taxable minimum"
+	me.msg = "Error: the salary entered does not reach the taxable minimum"
+	return me.msg
 }
 
 func main() {
-	salary := 10000
+	salary := 120000
 
 	if salary < 150000 {
 		taxError := TaxError{}
-		taxError.msg = taxError.Error()
-		panic(taxError.msg)
+		panic(taxError.Error())
 	}
 
 	fmt.Println("Must pay tax")
