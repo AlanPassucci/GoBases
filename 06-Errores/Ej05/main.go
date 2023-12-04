@@ -12,6 +12,33 @@ El mismo tendrá que indicar “Error: the worker cannot have worked less than 8
 
 package main
 
-func main() {
+import (
+	"errors"
+	"fmt"
+)
 
+func calculateSalary(hoursOfWork int, valuePerHour float64) (salary float64, err error) {
+	if hoursOfWork < 80 {
+		err = errors.New("the worker cannot have worked less than 80 hours per month")
+		return
+	}
+
+	salary = float64(hoursOfWork) * valuePerHour
+
+	if salary > 149000 {
+		salary -= salary * .1
+	}
+
+	return
+}
+
+func main() {
+	salary, err := calculateSalary(240, 1000)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println("Salary: $", salary)
 }
