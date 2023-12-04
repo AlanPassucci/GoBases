@@ -14,9 +14,9 @@ type TaxError struct {
 	msg string
 }
 
-func (me *TaxError) Error() string {
-	me.msg = "Error: the salary entered does not reach the taxable minimum"
-	return me.msg
+func (te *TaxError) Error() string {
+	te.msg = "Error: the salary entered does not reach the taxable minimum"
+	return te.msg
 }
 
 func main() {
