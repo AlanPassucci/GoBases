@@ -10,24 +10,26 @@ package main
 
 import "fmt"
 
-const ErrorLowSalary = "Error: the salary entered does not reach the taxable minimum"
+type ErrNotTaxableSalary struct{}
 
-type TaxError struct {
-	msg string
+func (err ErrNotTaxableSalary) Error() string {
+	return "the salary entered does not reach the taxable minimum"
 }
 
-func (te *TaxError) Error() string {
-	return te.msg
+func ShouldPayTaxes(salary int) (err error) {
+	if salary < 150000 {
+		err = ErrNotTaxableSalary{}
+		return
+	}
+	return
 }
 
 func main() {
-	salary := 120000
+	const salary = 120000
 
-	if salary < 150000 {
-		taxError := TaxError{
-			msg: ErrorLowSalary,
-		}
-		panic(taxError.Error())
+	if err := ShouldPayTaxes(salary); err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	fmt.Println("Must pay tax")
