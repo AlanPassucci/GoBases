@@ -8,6 +8,23 @@ siendo [salary] el valor de tipo int pasado por parámetro).
 
 package main
 
-func main() {
+import "fmt"
 
+func ShouldPayTaxes(salary int) (err error) {
+	if salary < 150000 {
+		err = fmt.Errorf("the minimum taxable amount is 150000 and the salary entered is: %d", salary)
+		return
+	}
+	return
+}
+
+func main() {
+	const salary = 125000
+
+	if err := ShouldPayTaxes(salary); err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println("Must pay tax")
 }
