@@ -2,39 +2,43 @@ package main
 
 import (
 	"fmt"
-	"gobases/Desafio/internal/tickets"
+	"gobases/Desafio/internal/airline"
+	"gobases/Desafio/internal/filemanager"
 )
 
 func main() {
+	fileManager := filemanager.NewFileManager("./tickets.csv")
 	fmt.Println("Creando lista de tickets...")
-	ticketsList, err := tickets.CreateTicketsListByFile("./tickets.csv")
+	tickets, err := fileManager.CreateTicketsListByFile()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	fmt.Println("¡Lista de tickets creada!")
 
-	fmt.Println("\nCalculando total de tickets con destino a China...")
-	totalChinaTickets, err := tickets.GetTotalTicketsByDestination(ticketsList, "China")
+	newAirline := airline.NewAirline(tickets)
+	fmt.Println("\nCalculando total de tickets con destino a Brasil...")
+	totalBrazilTickets, err := newAirline.GetTotalTicketsByDestination("Brazil")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Total de tickets con destino a China:", totalChinaTickets)
+	fmt.Println("Total de tickets con destino a Brasil:", totalBrazilTickets)
 
 	fmt.Println("\nCalculando total de viajes durante la noche...")
-	totalTimeTickets, err := tickets.GetTotalTicketsByPeriod(ticketsList, tickets.Night)
+
+	totalTimeTickets, err := newAirline.GetTotalTicketsByPeriod(airline.Night)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	fmt.Println("Total de viajes durante la noche:", totalTimeTickets)
 
-	fmt.Println("\nCalculando promedio de viajes a China...")
-	averageTickets, err := tickets.GetAverageTicketsByDestination(ticketsList, "China")
+	fmt.Println("\nCalculando promedio de viajes a Brasil...")
+	percentageTickets, err := newAirline.GetPercentageTicketsByDestination("Brazil")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Promedio de viajes a China:", averageTickets, "%")
+	fmt.Println("Promedio de viajes a Brasil:", percentageTickets, "%")
 }
